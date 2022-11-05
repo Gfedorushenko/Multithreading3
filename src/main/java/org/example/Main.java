@@ -29,17 +29,26 @@ public class Main {
                 }
             }
         };
+        Runnable logic3 = () -> {
+            for (int i = 0; i < texts.length; i++) {
+                if (isOneCar(texts[i])) {
+                    beautifulWord(texts[i]);
+                }
+            }
+        };
 
         Thread thread1 = new Thread(logic1);
         thread1.start();
         Thread thread2 = new Thread(logic2);
         thread2.start();
+        Thread thread3 = new Thread(logic3);
+        thread3.start();
 
-        //Слова состоящие из одной и той же буквы (критерий 2) подходят под условие палиндрома (критерий 1).
-        // Для получения правильных результатов проверку по критерию 2 делать не стал иначе будет задвоение.
 
         thread1.join();
         thread2.join();
+        thread3.join();
+
         System.out.println("Красивых слов с длиной 3: " + atomicInt3.get() + " шт");
         System.out.println("Красивых слов с длиной 4: " + atomicInt4.get() + " шт");
         System.out.println("Красивых слов с длиной 5: " + atomicInt5.get() + " шт");
@@ -76,7 +85,7 @@ public class Main {
     public static boolean lettersInAscendingOrder(String s) {
         int n = s.length();
         if (s.charAt(0) != s.charAt(n - 1)) {
-            for (int i = 0; i < s.length() - 1; ++i) {
+            for (int i = 0; i < n - 1; ++i) {
                 if ((int) s.charAt(i) > (int) s.charAt(i + 1)) {
                     return false;
                 }
@@ -84,5 +93,14 @@ public class Main {
             return true;
         } else
             return false;
+    }
+
+    public static boolean isOneCar(String s) {
+        for (int i = 1; i < s.length(); ++i) {
+            if ((int) s.charAt(0) != (int) s.charAt(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
